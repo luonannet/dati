@@ -1,0 +1,365 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "beego Test API",
+        "description": "beego has a very cool tools to autogenerate documents for your API",
+        "version": "1.0.0",
+        "termsOfService": "http://beego.me/",
+        "contact": {
+            "email": "astaxie@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "basePath": "/api",
+    "paths": {
+        "/admin/answer/getAll": {
+            "get": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "获取所有问题的答案",
+                "operationId": "AdminController.GetAllAnswer",
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "500": {
+                        "description": "失败"
+                    }
+                }
+            }
+        },
+        "/admin/answer/{id}": {
+            "delete": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "删除这道题的答案",
+                "operationId": "AdminController.DeleteAnswer",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "题号， 数字，第一题就写1  第二题就写2",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "500": {
+                        "description": "失败"
+                    }
+                }
+            }
+        },
+        "/admin/createAdmin": {
+            "post": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "创建主持人。重复创建会覆盖",
+                "operationId": "AdminController.CreateAdmin",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "description": "登录名",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pswd",
+                        "description": "密码",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "500": {
+                        "description": "失败"
+                    }
+                }
+            }
+        },
+        "/admin/createBangdan": {
+            "get": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "生成排名榜单",
+                "operationId": "AdminController.CreateBangdan",
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "500": {
+                        "description": "失败"
+                    }
+                }
+            }
+        },
+        "/admin/getBangdan": {
+            "get": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "获取已经生成的榜单，没有榜单的话就再去生成一次",
+                "operationId": "AdminController.GetBangdan",
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "500": {
+                        "description": "失败"
+                    }
+                }
+            }
+        },
+        "/admin/inputAnswer": {
+            "post": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "主持人录入正确答案",
+                "operationId": "AdminController.InputAnswer",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "questID",
+                        "description": "题号， 数字，第一题就写1  第二题就写2",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "answer",
+                        "description": "答案选项，比如 A ，B  C ，不分大小写",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "500": {
+                        "description": "失败"
+                    }
+                }
+            }
+        },
+        "/admin/login": {
+            "post": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "主持人登录",
+                "operationId": "AdminController.login",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "description": "登录名",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pswd",
+                        "description": "密码",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "500": {
+                        "description": "失败"
+                    }
+                }
+            }
+        },
+        "/admin/question/{id}": {
+            "get": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "获取一个问题的答案",
+                "operationId": "AdminController.GetSingleAnswer",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "题号， 数字，第一题就写1  第二题就写2",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "500": {
+                        "description": "失败"
+                    }
+                }
+            }
+        },
+        "/admin/setQuestionID": {
+            "post": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "设置当前是哪道题",
+                "operationId": "AdminController.SetQuestionID",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "questID",
+                        "description": "题号， 数字，第一题就写1  第二题就写2",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "500": {
+                        "description": "失败"
+                    }
+                }
+            }
+        },
+        "/user/answer": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "description": "普通玩家回答问题",
+                "operationId": "UserController.answerQuestion",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "questID",
+                        "description": "题号， 数字，第一题就写1  第二题就写2",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "answer",
+                        "description": "答案选项，比如 A ，B  C ，不分大小写",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "500": {
+                        "description": "失败"
+                    }
+                }
+            }
+        },
+        "/user/answer/{id}": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "description": "获取自己某一题的答案",
+                "operationId": "UserController.GetAnswer",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "题号， 数字，第一题就写1  第二题就写2",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "500": {
+                        "description": "失败"
+                    }
+                }
+            }
+        },
+        "/user/getMyAllAnswer": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "description": "获取自己的所有答案",
+                "operationId": "UserController.getMyAllAnswer",
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "500": {
+                        "description": "失败"
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "description": "普通玩家登录",
+                "operationId": "UserController.Login",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "description": "登录名",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "500": {
+                        "description": "失败"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "admin",
+            "description": "主持人操作的 API\n"
+        },
+        {
+            "name": "user",
+            "description": "玩家操作API\n"
+        }
+    ]
+}
