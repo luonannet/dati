@@ -1,4 +1,5 @@
 ./debug
 ./*.tmp
 ./*.data
-./chunjie*
+./chunjie
+./chunjie.*
