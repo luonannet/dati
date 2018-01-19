@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"dati/models"
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -16,7 +15,6 @@ type UserController struct {
 }
 
 func (u *UserController) Prepare() {
-	fmt.Println(" ........... Prepare...........")
 	currentUser := u.GetSession("username")
 	if strings.Contains(u.Ctx.Request.URL.Path, "/login") {
 		return
