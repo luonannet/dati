@@ -7,7 +7,7 @@ import (
 
 func init() {
 
-	beego.GlobalControllerRouter["chunjie/controllers:AdminController"] = append(beego.GlobalControllerRouter["chunjie/controllers:AdminController"],
+	beego.GlobalControllerRouter["dati/controllers:AdminController"] = append(beego.GlobalControllerRouter["dati/controllers:AdminController"],
 		beego.ControllerComments{
 			Method: "Delete",
 			Router: `/answer/:id`,
@@ -15,7 +15,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["chunjie/controllers:AdminController"] = append(beego.GlobalControllerRouter["chunjie/controllers:AdminController"],
+	beego.GlobalControllerRouter["dati/controllers:AdminController"] = append(beego.GlobalControllerRouter["dati/controllers:AdminController"],
 		beego.ControllerComments{
 			Method: "GetAllAnswer",
 			Router: `/answer/getAll`,
@@ -23,7 +23,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["chunjie/controllers:AdminController"] = append(beego.GlobalControllerRouter["chunjie/controllers:AdminController"],
+	beego.GlobalControllerRouter["dati/controllers:AdminController"] = append(beego.GlobalControllerRouter["dati/controllers:AdminController"],
 		beego.ControllerComments{
 			Method: "CreateAdmin",
 			Router: `/createAdmin`,
@@ -31,7 +31,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["chunjie/controllers:AdminController"] = append(beego.GlobalControllerRouter["chunjie/controllers:AdminController"],
+	beego.GlobalControllerRouter["dati/controllers:AdminController"] = append(beego.GlobalControllerRouter["dati/controllers:AdminController"],
 		beego.ControllerComments{
 			Method: "CreateBangdan",
 			Router: `/createBangdan`,
@@ -39,7 +39,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["chunjie/controllers:AdminController"] = append(beego.GlobalControllerRouter["chunjie/controllers:AdminController"],
+	beego.GlobalControllerRouter["dati/controllers:AdminController"] = append(beego.GlobalControllerRouter["dati/controllers:AdminController"],
 		beego.ControllerComments{
 			Method: "GetBangdan",
 			Router: `/getBangdan`,
@@ -47,7 +47,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["chunjie/controllers:AdminController"] = append(beego.GlobalControllerRouter["chunjie/controllers:AdminController"],
+	beego.GlobalControllerRouter["dati/controllers:AdminController"] = append(beego.GlobalControllerRouter["dati/controllers:AdminController"],
 		beego.ControllerComments{
 			Method: "Post",
 			Router: `/inputAnswer`,
@@ -55,7 +55,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["chunjie/controllers:AdminController"] = append(beego.GlobalControllerRouter["chunjie/controllers:AdminController"],
+	beego.GlobalControllerRouter["dati/controllers:AdminController"] = append(beego.GlobalControllerRouter["dati/controllers:AdminController"],
 		beego.ControllerComments{
 			Method: "Login",
 			Router: `/login`,
@@ -63,7 +63,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["chunjie/controllers:AdminController"] = append(beego.GlobalControllerRouter["chunjie/controllers:AdminController"],
+	beego.GlobalControllerRouter["dati/controllers:AdminController"] = append(beego.GlobalControllerRouter["dati/controllers:AdminController"],
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/question/:id`,
@@ -71,7 +71,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["chunjie/controllers:AdminController"] = append(beego.GlobalControllerRouter["chunjie/controllers:AdminController"],
+	beego.GlobalControllerRouter["dati/controllers:AdminController"] = append(beego.GlobalControllerRouter["dati/controllers:AdminController"],
 		beego.ControllerComments{
 			Method: "SetQuestionID",
 			Router: `/setQuestionID`,
@@ -79,7 +79,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["chunjie/controllers:UserController"] = append(beego.GlobalControllerRouter["chunjie/controllers:UserController"],
+	beego.GlobalControllerRouter["dati/controllers:UserController"] = append(beego.GlobalControllerRouter["dati/controllers:UserController"],
 		beego.ControllerComments{
 			Method: "Post",
 			Router: `/answer`,
@@ -87,7 +87,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["chunjie/controllers:UserController"] = append(beego.GlobalControllerRouter["chunjie/controllers:UserController"],
+	beego.GlobalControllerRouter["dati/controllers:UserController"] = append(beego.GlobalControllerRouter["dati/controllers:UserController"],
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/answer/:id`,
@@ -95,7 +95,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["chunjie/controllers:UserController"] = append(beego.GlobalControllerRouter["chunjie/controllers:UserController"],
+	beego.GlobalControllerRouter["dati/controllers:UserController"] = append(beego.GlobalControllerRouter["dati/controllers:UserController"],
 		beego.ControllerComments{
 			Method: "GetAll",
 			Router: `/getMyAllAnswer`,
@@ -103,7 +103,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["chunjie/controllers:UserController"] = append(beego.GlobalControllerRouter["chunjie/controllers:UserController"],
+	beego.GlobalControllerRouter["dati/controllers:UserController"] = append(beego.GlobalControllerRouter["dati/controllers:UserController"],
 		beego.ControllerComments{
 			Method: "Login",
 			Router: `/login`,

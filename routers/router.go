@@ -8,7 +8,7 @@
 package routers
 
 import (
-	"chunjie/controllers"
+	"dati/controllers"
 
 	"github.com/astaxie/beego"
 )

@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"chunjie/models"
+	"dati/models"
 	"fmt"
 	"strconv"
 	"strings"

@@ -1,7 +1,7 @@
 package main
 
 import (
-	_ "chunjie/routers"
+	_ "dati/routers"
 
 	"github.com/astaxie/beego"
 )
