@@ -1,7 +1,5 @@
-./debug
-./*.tmp
-./*.data
-./chunjie
-./chunjie.*
-./*.exe
-./*.exe~
+debug
+*.tmp
+*.data
+*.exe
+*.exe~
