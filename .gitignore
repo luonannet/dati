@@ -3,3 +3,5 @@
 ./*.data
 ./chunjie
 ./chunjie.*
+./*.exe
+./*.exe~
