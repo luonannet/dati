@@ -1,6 +1,6 @@
 package models
 
-//服务端输出的数据
+//ResponseData 服务端输出的数据
 type ResponseData struct {
 	Status int         `json:"status"`
 	Msg    string      `json:"msg"`

@@ -127,6 +127,8 @@ paths:
       responses:
         "200":
           description: 成功
+        "400":
+          description: '{models.ResponseData}'
         "500":
           description: 失败
   /admin/question/{id}:
@@ -234,10 +236,21 @@ paths:
           description: 成功
         "500":
           description: 失败
+  /user/logout:
+    get:
+      tags:
+      - user
+      description: 玩家中途退出，这个只在开发测试的时候才有用
+      operationId: UserController.Logout
+      responses:
+        "200":
+          description: 成功
+        "500":
+          description: 失败
 tags:
 - name: admin
   description: |
-    主持人操作的 API
+    AdminController 主持人操作的 API
 - name: user
   description: |
     玩家操作API

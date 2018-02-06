@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"dati/models"
+	"os"
 	"sort"
 	"strconv"
 	"strings"
@@ -9,7 +10,7 @@ import (
 	"github.com/astaxie/beego"
 )
 
-// 主持人操作的 API
+//AdminController 主持人操作的 API
 type AdminController struct {
 	beego.Controller
 }
@@ -21,7 +22,7 @@ func (o *AdminController) Prepare() {
 	currentUser := o.GetSession("admin")
 	if currentUser == nil || currentUser == "" {
 		var response models.ResponseData
-		response.Status = 500
+		response.Status = 400
 		response.Msg = "请先登录"
 		o.Data["json"] = &response
 		o.ServeJSON()
@@ -34,6 +35,7 @@ func (o *AdminController) Prepare() {
 // @Param	name		query 	string	true		"登录名"
 // @Param	pswd		query 	string	true		"密码"
 // @Success 200 成功
+// @Success 400 {models.ResponseData}
 // @Failure 500 失败
 // @router /login [post]
 func (o *AdminController) Login() {
@@ -62,7 +64,7 @@ func (o *AdminController) Login() {
 		return
 	}
 	o.SetSession("admin", name)
-	response.Status = 500
+	response.Status = 200
 	response.Msg = "登录成功"
 	response.Data = &models.Admin
 	o.Data["json"] = &response
@@ -126,7 +128,7 @@ func (o *AdminController) Post() {
 	questid, err = o.GetInt("questID")
 	if err != nil || questid <= 0 {
 		response.Status = 500
-		response.Msg = "问题的id 不是数字" + err.Error()
+		response.Msg = "问题的id 不合法"
 		o.Data["json"] = &response
 		o.ServeJSON()
 		return
@@ -152,24 +154,6 @@ func (o *AdminController) Post() {
 		return
 	}
 	models.StandAnswer[questid] = thisAnswer
-	// var standanswerBuffer bytes.Buffer
-	// encoder := gob.NewEncoder(&standanswerBuffer)
-	// err = encoder.Encode(models.StandAnswer)
-	// if err != nil {
-	// 	response.Status = 500
-	// 	response.Msg = "gob.NewEncoder err:" + err.Error()
-	// 	o.Data["json"] = &response
-	// 	o.ServeJSON()
-	// 	return
-	// }
-	// err = ioutil.WriteFile(standAnswerPath, standanswerBuffer.Bytes(), os.ModePerm)
-	// if err != nil {
-	// 	response.Status = 500
-	// 	response.Msg = "ioutil.WriteFile err:" + err.Error()
-	// 	o.Data["json"] = &response
-	// 	o.ServeJSON()
-	// 	return
-	// }
 	err = models.SaveStandAnswerToFile()
 	if err != nil {
 		response.Status = 500
@@ -197,7 +181,7 @@ func (o *AdminController) Get() {
 	questid, questerr := strconv.Atoi(questidStr)
 	if questerr != nil || questid <= 0 {
 		response.Status = 500
-		response.Msg = "id不是数字" + questerr.Error()
+		response.Msg = "id不合法"
 		o.Data["json"] = &response
 		o.ServeJSON()
 		return
@@ -245,7 +229,7 @@ func (o *AdminController) Delete() {
 	questid, questerr := strconv.Atoi(questidStr)
 	if questerr != nil || questid <= 0 {
 		response.Status = 500
-		response.Msg = "id不是数字" + questerr.Error()
+		response.Msg = "id不合法"
 		o.Data["json"] = &response
 		o.ServeJSON()
 		return
@@ -279,8 +263,9 @@ func (o *AdminController) CreateBangdan() {
 	for username, answerMap := range models.AllUserAnswer {
 		currentUser := new(models.User)
 		currentUser.Username = username
+		tempAnswer := (map[int]string)(answerMap)
 
-		for myQuestid, myanswer := range *answerMap {
+		for myQuestid, myanswer := range tempAnswer {
 			if strings.EqualFold(myanswer, models.StandAnswer[myQuestid]) {
 				currentUser.Count++
 			}
@@ -313,11 +298,18 @@ func (o *AdminController) GetBangdan() {
 	response.Msg = "榜单排行"
 	bangdan, err := models.GetBangdanFile()
 	if err != nil {
-		response.Status = 500
-		response.Msg = "GetBangdan: " + err.Error()
-		o.Data["json"] = &response
-		o.ServeJSON()
-		return
+		switch err.(type) {
+		case *os.PathError:
+			o.CreateBangdan()
+			return
+		default:
+			response.Status = 500
+			response.Msg = "GetBangdan: " + err.Error()
+			o.Data["json"] = &response
+			o.ServeJSON()
+			return
+		}
+
 	}
 	response.Data = bangdan
 	o.Data["json"] = &response
@@ -337,7 +329,7 @@ func (o *AdminController) SetQuestionID() {
 	questid, err = o.GetInt("questID")
 	if err != nil || questid <= 0 {
 		response.Status = 500
-		response.Msg = "questID 不合法" + err.Error()
+		response.Msg = "questID 不合法"
 		o.Data["json"] = &response
 		o.ServeJSON()
 		return
@@ -345,7 +337,7 @@ func (o *AdminController) SetQuestionID() {
 	response.Status = 200
 	response.Msg = "设置成功"
 	models.CurrentQuestion = questid
-	response.Data = questid
+	response.Data = models.CurrentQuestion
 	o.Data["json"] = &response
 	o.ServeJSON()
 }

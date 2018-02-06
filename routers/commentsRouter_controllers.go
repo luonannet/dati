@@ -111,4 +111,12 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
+	beego.GlobalControllerRouter["dati/controllers:UserController"] = append(beego.GlobalControllerRouter["dati/controllers:UserController"],
+		beego.ControllerComments{
+			Method: "Logout",
+			Router: `/logout`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
 }

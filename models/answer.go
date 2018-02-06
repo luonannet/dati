@@ -7,12 +7,6 @@ import (
 	"os"
 )
 
-//AnswerStruct 正确答案
-// type AnswerStruct struct {
-// 	Answer string `json:"answer"`
-// }
-//type StandAnswerStruct map[int]string
-
 const (
 	standAnswerPath = "./standAnswer.data"
 	adminPath       = "./admin.data"
@@ -20,13 +14,21 @@ const (
 )
 
 //StandAnswer 正确答案的列表
-var StandAnswer map[int]string
-var AllUserAnswer map[string]*map[int]string //key 用户的编号，int题目的编号。value 是答案]
-var CurrentQuestion int                      //当前在做哪道题
+type StandAnswerStruct map[int]string
+
+var StandAnswer StandAnswerStruct
+
+//AllUserAnswer key 用户的编号，int题目的编号。value 是答案]
+var AllUserAnswer map[string]StandAnswerStruct
+
+//CurrentQuestion 当前在做哪道题
+var CurrentQuestion int
+
+//init 初始化
 func init() {
 	CurrentQuestion = -1
 	StandAnswer = make(map[int]string)
-	AllUserAnswer = make(map[string]*map[int]string)
+	AllUserAnswer = make(map[string]StandAnswerStruct)
 
 	standAnswerData, err := ioutil.ReadFile(standAnswerPath)
 	if err == nil {
@@ -46,7 +48,7 @@ func init() {
 
 }
 
-//保存标准答案
+//SaveStandAnswerToFile 保存标准答案
 func SaveStandAnswerToFile() (err error) {
 	var standanswerBuffer bytes.Buffer
 	encoder := gob.NewEncoder(&standanswerBuffer)
@@ -62,7 +64,7 @@ func SaveStandAnswerToFile() (err error) {
 	return nil
 }
 
-//保存榜单
+//SaveBangdanToFile 保存榜单.
 func SaveBangdanToFile(bangdan UserList) (err error) {
 	var bangdanBuffer bytes.Buffer
 	encoder := gob.NewEncoder(&bangdanBuffer)
@@ -78,7 +80,7 @@ func SaveBangdanToFile(bangdan UserList) (err error) {
 	return nil
 }
 
-//获取榜单
+//GetBangdanFile 获取榜单
 func GetBangdanFile() (bangdan *UserList, err error) {
 	bangdanData, err := ioutil.ReadFile(bangdanPath)
 	if err == nil {
@@ -89,5 +91,6 @@ func GetBangdanFile() (bangdan *UserList, err error) {
 		decoder.Decode(bangdan)
 		return bangdan, err
 	}
+
 	return nil, err
 }

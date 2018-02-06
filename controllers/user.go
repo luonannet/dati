@@ -11,7 +11,6 @@ import (
 // 玩家操作API
 type UserController struct {
 	beego.Controller
-	Username string
 }
 
 func (u *UserController) Prepare() {
@@ -21,13 +20,12 @@ func (u *UserController) Prepare() {
 	}
 	if currentUser == nil || currentUser == "" {
 		var response models.ResponseData
-		response.Status = 500
+		response.Status = 400
 		response.Msg = "请先登录"
 		u.Data["json"] = &response
 		u.ServeJSON()
 		return
 	}
-	u.Username, _ = currentUser.(string)
 }
 
 // @Title answerQuestion
@@ -82,7 +80,9 @@ func (u *UserController) Post() {
 		u.ServeJSON()
 		return
 	}
-	temp2 := *(models.AllUserAnswer[u.Username])
+	currentUser := u.GetSession("username")
+	username, _ := currentUser.(string)
+	temp2 := models.AllUserAnswer[username]
 	temp2[questid] = thisAnswer
 	response.Status = 200
 	response.Msg = "录入成功"
@@ -100,7 +100,9 @@ func (u *UserController) GetAll() {
 	var response models.ResponseData
 	response.Status = 200
 	response.Msg = "我的答案"
-	response.Data = models.AllUserAnswer[u.Username]
+	currentUser := u.GetSession("username")
+	username, _ := currentUser.(string)
+	response.Data = models.AllUserAnswer[username]
 
 	u.Data["json"] = &response
 	u.ServeJSON()
@@ -127,7 +129,9 @@ func (u *UserController) Get() {
 
 	response.Status = 200
 	response.Msg = "获取成功"
-	myAllanswer := *(models.AllUserAnswer[u.Username])
+	currentUser := u.GetSession("username")
+	username, _ := currentUser.(string)
+	myAllanswer := models.AllUserAnswer[username]
 	response.Data = myAllanswer[questid]
 	u.Data["json"] = &response
 	u.ServeJSON()
@@ -149,37 +153,51 @@ func (u *UserController) Login() {
 		u.ServeJSON()
 		return
 	}
-
-	currentUserSession := u.GetSession("username")
-	if currentUserSession != nil {
-		if currentUser, ok := currentUserSession.(string); ok {
-			if currentUser != name {
-				response.Status = 500
-				response.Msg = "请不要中途换名"
-				u.Data["json"] = &response
-				u.ServeJSON()
-				return
-			}
+	currentUser := u.GetSession("username")
+	username, _ := currentUser.(string)
+	if username != "" {
+		if username != name {
+			response.Status = 500
+			response.Msg = "请不要中途换名"
+			response.Data = username
+			u.Data["json"] = &response
+			u.ServeJSON()
+			return
 		}
 	} else {
 		if models.AllUserAnswer[name] != nil {
 			response.Status = 500
 			response.Msg = "此用户名已经被占用。"
+			response.Data = name
 			u.Data["json"] = &response
 			u.ServeJSON()
 			return
 		}
 
 	}
-	// myAnswer := (models.AllUserAnswer[currentUser])
-	// if myAnswer == nil {
-	temp := make(map[int]string)
-	models.AllUserAnswer[name] = &temp
-	//}
+	models.AllUserAnswer[name] = models.StandAnswerStruct(make(map[int]string))
 	u.SetSession("username", name)
 	response.Status = 200
 	response.Msg = "登录成功"
 	response.Data = models.AllUserAnswer[name]
+	u.Data["json"] = &response
+	u.ServeJSON()
+}
+
+// @Title Logout
+// @Description 玩家中途退出，这个只在开发测试的时候才有用
+// @Success 200 成功
+// @Failure 500 失败
+// @router /logout [get]
+func (u *UserController) Logout() {
+	var response models.ResponseData
+	currentUser := u.GetSession("username")
+	username, _ := currentUser.(string)
+	delete(models.AllUserAnswer, username)
+	response.Status = 200
+	response.Msg = "退出登录"
+	u.DelSession("username")
+	response.Data = username
 	u.Data["json"] = &response
 	u.ServeJSON()
 }
