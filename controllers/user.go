@@ -82,8 +82,16 @@ func (u *UserController) Post() {
 	}
 	currentUser := u.GetSession("username")
 	username, _ := currentUser.(string)
-	temp2 := models.AllUserAnswer[username]
-	temp2[questid] = thisAnswer
+	var myAllAnswer map[int]string
+	temp2, has := models.AllUserAnswer.Load(username)
+	if has == false || temp2 == nil {
+		myAllAnswer = make(map[int]string)
+	} else {
+
+		myAllAnswer, _ = temp2.(map[int]string)
+	}
+	myAllAnswer[questid] = thisAnswer
+	models.AllUserAnswer.Store(username, myAllAnswer)
 	response.Status = 200
 	response.Msg = "录入成功"
 	response.Data = &thisAnswer
@@ -102,7 +110,7 @@ func (u *UserController) GetAll() {
 	response.Msg = "我的答案"
 	currentUser := u.GetSession("username")
 	username, _ := currentUser.(string)
-	response.Data = models.AllUserAnswer[username]
+	response.Data, _ = models.AllUserAnswer.Load(username)
 
 	u.Data["json"] = &response
 	u.ServeJSON()
@@ -131,8 +139,9 @@ func (u *UserController) Get() {
 	response.Msg = "获取成功"
 	currentUser := u.GetSession("username")
 	username, _ := currentUser.(string)
-	myAllanswer := models.AllUserAnswer[username]
-	response.Data = myAllanswer[questid]
+	myAllanswer, _ := models.AllUserAnswer.Load(username)
+	myAllAnswer, _ := myAllanswer.(map[int]string)
+	response.Data = (myAllAnswer)[questid]
 	u.Data["json"] = &response
 	u.ServeJSON()
 }
@@ -165,7 +174,7 @@ func (u *UserController) Login() {
 			return
 		}
 	} else {
-		if models.AllUserAnswer[name] != nil {
+		if _, ok := models.AllUserAnswer.Load(username); ok {
 			response.Status = 500
 			response.Msg = "此用户名已经被占用。"
 			response.Data = name
@@ -175,11 +184,11 @@ func (u *UserController) Login() {
 		}
 
 	}
-	models.AllUserAnswer[name] = models.StandAnswerStruct(make(map[int]string))
+	models.AllUserAnswer.Store(username, models.StandAnswerStruct(make(map[int]string)))
 	u.SetSession("username", name)
 	response.Status = 200
 	response.Msg = "登录成功"
-	response.Data = models.AllUserAnswer[name]
+	response.Data, _ = models.AllUserAnswer.Load(username)
 	u.Data["json"] = &response
 	u.ServeJSON()
 }
@@ -193,7 +202,7 @@ func (u *UserController) Logout() {
 	var response models.ResponseData
 	currentUser := u.GetSession("username")
 	username, _ := currentUser.(string)
-	delete(models.AllUserAnswer, username)
+	models.AllUserAnswer.Delete(username)
 	response.Status = 200
 	response.Msg = "退出登录"
 	u.DelSession("username")

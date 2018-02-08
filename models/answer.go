@@ -5,6 +5,7 @@ import (
 	"encoding/gob"
 	"io/ioutil"
 	"os"
+	"sync"
 )
 
 const (
@@ -19,7 +20,7 @@ type StandAnswerStruct map[int]string
 var StandAnswer StandAnswerStruct
 
 //AllUserAnswer key 用户的编号，int题目的编号。value 是答案]
-var AllUserAnswer map[string]StandAnswerStruct
+var AllUserAnswer sync.Map // map[string]StandAnswerStruct
 
 //CurrentQuestion 当前在做哪道题
 var CurrentQuestion int
@@ -28,7 +29,7 @@ var CurrentQuestion int
 func init() {
 	CurrentQuestion = -1
 	StandAnswer = make(map[int]string)
-	AllUserAnswer = make(map[string]StandAnswerStruct)
+	//	AllUserAnswer = make(map[string]StandAnswerStruct)
 
 	standAnswerData, err := ioutil.ReadFile(standAnswerPath)
 	if err == nil {

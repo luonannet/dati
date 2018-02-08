@@ -260,11 +260,10 @@ func (o *AdminController) CreateBangdan() {
 	response.Status = 200
 	response.Msg = "榜单排行"
 	var result models.UserList
-	for username, answerMap := range models.AllUserAnswer {
+	models.AllUserAnswer.Range(func(username, answerMap interface{}) bool {
 		currentUser := new(models.User)
-		currentUser.Username = username
-		tempAnswer := (map[int]string)(answerMap)
-
+		currentUser.Username, _ = username.(string)
+		tempAnswer, _ := (answerMap.(map[int]string))
 		for myQuestid, myanswer := range tempAnswer {
 			if strings.EqualFold(myanswer, models.StandAnswer[myQuestid]) {
 				currentUser.Count++
@@ -272,7 +271,21 @@ func (o *AdminController) CreateBangdan() {
 		}
 
 		result = append(result, currentUser)
-	}
+		return true
+	})
+	// for username, answerMap := range models.AllUserAnswer {
+	// 	currentUser := new(models.User)
+	// 	currentUser.Username = username
+	// 	tempAnswer := (map[int]string)(answerMap)
+
+	// 	for myQuestid, myanswer := range tempAnswer {
+	// 		if strings.EqualFold(myanswer, models.StandAnswer[myQuestid]) {
+	// 			currentUser.Count++
+	// 		}
+	// 	}
+
+	// 	result = append(result, currentUser)
+	// }
 	sort.Sort(result)
 	err := models.SaveBangdanToFile(result)
 	if err != nil {
