@@ -182,8 +182,12 @@ func (u *UserController) Login() {
 			return
 		}
 		username = name
+
 	}
-	models.AllUserAnswer.Store(username, models.StandAnswerStruct(make(map[int]string)))
+	if _, ok := models.AllUserAnswer.Load(username); ok == false {
+		models.AllUserAnswer.Store(username, make(models.StandAnswerStruct))
+	}
+
 	u.SetSession("username", name)
 	response.Status = 200
 	response.Msg = "登录成功"

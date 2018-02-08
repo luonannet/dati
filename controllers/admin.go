@@ -274,19 +274,6 @@ func (o *AdminController) CreateBangdan() {
 		result = append(result, currentUser)
 		return true
 	})
-	// for username, answerMap := range models.AllUserAnswer {
-	// 	currentUser := new(models.User)
-	// 	currentUser.Username = username
-	// 	tempAnswer := (map[int]string)(answerMap)
-
-	// 	for myQuestid, myanswer := range tempAnswer {
-	// 		if strings.EqualFold(myanswer, models.StandAnswer[myQuestid]) {
-	// 			currentUser.Count++
-	// 		}
-	// 	}
-
-	// 	result = append(result, currentUser)
-	// }
 	sort.Sort(result)
 	err := models.SaveBangdanToFile(result)
 	if err != nil {
