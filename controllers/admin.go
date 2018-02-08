@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"dati/models"
-	"fmt"
 	"os"
 	"sort"
 	"strconv"
@@ -270,7 +269,6 @@ func (o *AdminController) CreateBangdan() {
 				currentUser.Count++
 			}
 		}
-		fmt.Println(username, currentUser.Count)
 		result = append(result, currentUser)
 		return true
 	})
@@ -310,7 +308,6 @@ func (o *AdminController) GetBangdan() {
 			o.ServeJSON()
 			return
 		}
-
 	}
 	response.Data = bangdan
 	o.Data["json"] = &response

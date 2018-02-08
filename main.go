@@ -12,5 +12,7 @@ func main() {
 		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
 	}
 	beego.BConfig.Listen.Graceful = true
+	beego.BConfig.ServerName = "roland"
+	beego.BConfig.WebConfig.Session.SessionGCMaxLifetime = 36000
 	beego.Run()
 }
