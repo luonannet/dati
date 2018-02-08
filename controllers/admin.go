@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"dati/models"
+	"fmt"
 	"os"
 	"sort"
 	"strconv"
@@ -263,13 +264,13 @@ func (o *AdminController) CreateBangdan() {
 	models.AllUserAnswer.Range(func(username, answerMap interface{}) bool {
 		currentUser := new(models.User)
 		currentUser.Username, _ = username.(string)
-		tempAnswer, _ := (answerMap.(map[int]string))
+		tempAnswer, _ := (answerMap.(models.StandAnswerStruct))
 		for myQuestid, myanswer := range tempAnswer {
 			if strings.EqualFold(myanswer, models.StandAnswer[myQuestid]) {
 				currentUser.Count++
 			}
 		}
-
+		fmt.Println(username, currentUser.Count)
 		result = append(result, currentUser)
 		return true
 	})

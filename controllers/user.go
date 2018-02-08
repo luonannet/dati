@@ -82,13 +82,12 @@ func (u *UserController) Post() {
 	}
 	currentUser := u.GetSession("username")
 	username, _ := currentUser.(string)
-	var myAllAnswer map[int]string
-	temp2, has := models.AllUserAnswer.Load(username)
-	if has == false || temp2 == nil {
-		myAllAnswer = make(map[int]string)
+	var myAllAnswer models.StandAnswerStruct
+	temp2, _ := models.AllUserAnswer.Load(username)
+	if temp2 == nil {
+		myAllAnswer = make(models.StandAnswerStruct)
 	} else {
-
-		myAllAnswer, _ = temp2.(map[int]string)
+		myAllAnswer, _ = temp2.(models.StandAnswerStruct)
 	}
 	myAllAnswer[questid] = thisAnswer
 	models.AllUserAnswer.Store(username, myAllAnswer)
@@ -107,9 +106,9 @@ func (u *UserController) Post() {
 func (u *UserController) GetAll() {
 	var response models.ResponseData
 	response.Status = 200
-	response.Msg = "我的答案"
 	currentUser := u.GetSession("username")
 	username, _ := currentUser.(string)
+	response.Msg = "我的答案"
 	response.Data, _ = models.AllUserAnswer.Load(username)
 
 	u.Data["json"] = &response
@@ -174,7 +173,7 @@ func (u *UserController) Login() {
 			return
 		}
 	} else {
-		if _, ok := models.AllUserAnswer.Load(username); ok {
+		if _, ok := models.AllUserAnswer.Load(name); ok {
 			response.Status = 500
 			response.Msg = "此用户名已经被占用。"
 			response.Data = name
@@ -182,7 +181,7 @@ func (u *UserController) Login() {
 			u.ServeJSON()
 			return
 		}
-
+		username = name
 	}
 	models.AllUserAnswer.Store(username, models.StandAnswerStruct(make(map[int]string)))
 	u.SetSession("username", name)
@@ -202,7 +201,7 @@ func (u *UserController) Logout() {
 	var response models.ResponseData
 	currentUser := u.GetSession("username")
 	username, _ := currentUser.(string)
-	models.AllUserAnswer.Delete(username)
+	//	models.AllUserAnswer.Delete(username)
 	response.Status = 200
 	response.Msg = "退出登录"
 	u.DelSession("username")
