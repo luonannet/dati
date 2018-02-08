@@ -1,3 +1,3 @@
 set GOARCH=amd64
-set GOOS=freebsd
+set GOOS=linux
 go build 
