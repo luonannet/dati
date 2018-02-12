@@ -314,7 +314,7 @@ func (o *AdminController) GetBangdan() {
 	o.ServeJSON()
 }
 
-// @Title SetQuestionID
+// @Title SetQuestionID	fdfdf
 // @Description 设置当前是哪道题
 // @Param	questID		query 	int	true		"题号， 数字，第一题就写1  第二题就写2"
 // @Success 200 成功

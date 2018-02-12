@@ -154,7 +154,7 @@ paths:
       tags:
       - admin
       description: 设置当前是哪道题
-      operationId: AdminController.SetQuestionID
+      operationId: "AdminController.SetQuestionID\tfdfdf"
       parameters:
       - in: query
         name: questID

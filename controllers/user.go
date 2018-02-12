@@ -43,7 +43,7 @@ func (u *UserController) Post() {
 	questid, err = u.GetInt("questID")
 	if err != nil || questid <= 0 {
 		response.Status = 500
-		response.Msg = "问题的id 不是数字" + err.Error()
+		response.Msg = "questID 异常：" + err.Error()
 		u.Data["json"] = &response
 		u.ServeJSON()
 		return
@@ -53,9 +53,9 @@ func (u *UserController) Post() {
 		if models.CurrentQuestion == -1 {
 			response.Msg = "哥，还没开始做题."
 		} else {
-
 			response.Msg = "兄弟，现在不是在做这道题."
 		}
+		response.Data = models.CurrentQuestion
 		u.Data["json"] = &response
 		u.ServeJSON()
 		return
